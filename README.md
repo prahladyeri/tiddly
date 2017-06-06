@@ -6,7 +6,7 @@
 
 ##### Table of Contents
 
-1. [What is Flask-Tiddly](#flask-tiddly)
+1. [What is flask-tiddly](#flask-tiddly)
 2. [Project Details](#project-details)
 7. [Installation](#installation)
 3. [Feature Roadmap](#feature-roadmap)
@@ -15,7 +15,7 @@
 
 ## Flask-Tiddly
 
-Flask-Tiddly is a minimal, prototype RESTful server app for basic CRUD transactions. It is database agnostic and uses sqlalchemy on the backend to talk to RDBMS. The database is `sqlite` by default, but you can switch to anything you want by making this small change in the `models.py`:
+`flask-tiddly` is a minimal, prototype RESTful server app for basic CRUD transactions. It is database agnostic and uses sqlalchemy on the backend to talk to RDBMS. The database is `sqlite` by default, but you can switch to anything you want by making this small change in the `models.py`:
 
 	engine = create_engine("sqlite:///tiddly.db", echo=True)
 	Base = declarative_base()
@@ -30,7 +30,7 @@ You can host this app and use it as your own replacement for any cloud based dat
 	PUT  	/books/1 ... => Update the record where `id` equals `1` with posted JSON data.
 	DELETE  /books/1 ... => Delete the record where `id` equals `1`.
 	
-The only "opinionated" thing about this app is this dependence on the `id` field. It assumes that each table has `id` column defined as the primary key and the CRUD transactions are based on that. Also, additional tables like `books` in this example need to be defined in `models.py`. By default, `Flask-Tiddly` comes with only two tables called `dual` and `user` to play around.
+The only "opinionated" thing about this app is this dependence on the `id` field. It assumes that each table has `id` column defined as the primary key and the CRUD transactions are based on that. Also, additional tables like `books` in this example need to be defined in `models.py`. By default, `flask-tiddly` comes with only two tables called `dual` and `user` to play around.
 
 ## Installation
 
@@ -60,6 +60,10 @@ To create your own new table, open the `models.py` in a text-editor and define y
 		def repr(self):
 			return "<Dual(id=%s, text=%s, )>" % (id, text)
 			
+Finally, you can also install `flask-tiddly` using `pip` just to play around with:
+
+	pip install tiddly
+			
 ## Feature Roadmap
 
 I intend to add the following features to this template project soon:
@@ -71,8 +75,8 @@ I intend to add the following features to this template project soon:
 
 ## License
 
-Flask-Tiddly is free and open source and available under `MIT` license.
+flask-tiddly is free and open source and available under `MIT` license.
 
 ## Stack
 
-`Flask-Tiddly` is built using the robust `flask` framework and `sqlalchemy` library.
+`tlask-tiddly` is built using the robust `flask` framework and `sqlalchemy` library.
