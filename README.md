@@ -6,7 +6,7 @@
 
 ##### Table of Contents
 
-1. [What is flask-tiddly](#what-is)
+1. [What is flask-tiddly](#user-content-what-is-flask-tiddly)
 2. [Project Details](#project-details)
 7. [Installation](#installation)
 3. [Feature Roadmap](#feature-roadmap)
