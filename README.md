@@ -64,7 +64,7 @@ After running the above command, you should be able to see something like this:
 	  "verb": "GET"
 	}
 	
-Similarly, you can try out the other verbs - `PUT` and `DELETE` to update and delete records respectively. To create your own new table, open the `models.py` in a text-editor and define your own class based on the sqlalchemy declarative `Base` class. Write the new class code around the other defined Model classes, for example the `Dual` class:
+Note that the app only works with `json` data, so the usual POST requests won't work. Similarly, you can try out other verbs - `PUT` and `DELETE` to update and delete records respectively. To define your own new table, open the `models.py` in a text-editor and define your own class based on the sqlalchemy declarative `Base` class. Write the new class code around the other defined Model classes, for example the `Dual` class:
 
 	class Dual(Base):
 		__tablename__ = "dual"
