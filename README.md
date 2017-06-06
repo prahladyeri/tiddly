@@ -17,6 +17,7 @@
 
 `flask-tiddly` is a minimal, prototype RESTful server app for basic CRUD transactions. It is database agnostic and uses sqlalchemy on the backend to talk to RDBMS. The database is `sqlite` by default, but you can switch to anything you want by making this small change in the `models.py`:
 
+	#TODO: Change as needed:
 	engine = create_engine("sqlite:///tiddly.db", echo=True)
 	Base = declarative_base()
 
