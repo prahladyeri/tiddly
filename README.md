@@ -6,14 +6,14 @@
 
 ##### Table of Contents
 
-1. [What is flask-tiddly](#flask-tiddly)
+1. [What is flask-tiddly](#what-is)
 2. [Project Details](#project-details)
 7. [Installation](#installation)
 3. [Feature Roadmap](#feature-roadmap)
 11. [License](#license)
 13. [Stack](#stack)
 
-## Flask-Tiddly
+## What is Flask-Tiddly
 
 `flask-tiddly` is a minimal, prototype RESTful server app for basic CRUD transactions. It is database agnostic and uses sqlalchemy on the backend to talk to RDBMS. The database is `sqlite` by default, but you can switch to anything you want by making this small change in the `models.py`:
 
