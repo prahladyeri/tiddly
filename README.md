@@ -46,11 +46,24 @@ After that, you can make the following POST request to insert some data into the
 
 	requests.post('http://localhost:5000/dual', json={"text":"chai and biscuit."})
 
-Now, open up the browser again and visit below `url` to list all the records in the `dual` table:
+You can use the accompanying `test.py` or any other tool like `curl` to make these requests. Now, open up the browser again and visit below `url` to list all the records in the `dual` table:
 
 	http://127.0.0.1:5000/dual
 	
-To create your own new table, open the `models.py` in a text-editor and define your own class based on the sqlalchemy declarative `Base` class. Write the new class code around the other defined Model classes, for example the `Dual` class:
+After running the above command, you should be able to see something like this:
+
+	{
+	  "data": [
+		{
+		  "id": 1, 
+		  "text": "chai and biscuit."
+		}
+	  ], 
+	  "status": "success", 
+	  "verb": "GET"
+	}
+	
+Similarly, you can try out the other verbs - `PUT` and `DELETE` to update and delete records respectively. To create your own new table, open the `models.py` in a text-editor and define your own class based on the sqlalchemy declarative `Base` class. Write the new class code around the other defined Model classes, for example the `Dual` class:
 
 	class Dual(Base):
 		__tablename__ = "dual"
