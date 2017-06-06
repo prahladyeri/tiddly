@@ -23,7 +23,7 @@
 
 ## Project Details
 
-You can host this app and use it as your own replacement for any cloud based database such as firebase or CouchDB as long as you follow the CRUD based I/O approach. The RESTful methods are versatile and compatible with the data needs of typical Single Page Apps developed in Angular or Backbone. For example:
+You can host this app and use it as your own replacement for any cloud based backend such as firebase or CouchDB as long as you follow the CRUD based I/O approach. The RESTful methods are versatile and compatible with the data needs of typical Single Page Apps developed in Angular or Backbone. For example:
 
 	GET  	/books ..... => Get all rows from the books table.
 	POST 	/books ..... => Insert record into books table from posted JSON data.
