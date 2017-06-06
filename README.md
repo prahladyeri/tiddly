@@ -92,4 +92,4 @@ flask-tiddly is free and open source and available under `MIT` license.
 
 ## Stack
 
-`tlask-tiddly` is built using the robust `flask` framework and `sqlalchemy` library.
+`flask-tiddly` is built using the robust `flask` framework and `sqlalchemy` library.
