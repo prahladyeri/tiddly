@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name="tiddly",
-    version="1.0.6",
+    version='1.0.7',
     packages=["tiddly"],#find_packages(),
 	package_dir={'tiddly': ''},
     #scripts=['say_hello.py'],

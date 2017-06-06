@@ -9,7 +9,7 @@ from models import engine, dbsession
 __author__ = "Prahlad Yeri"
 __license__ = "MIT"
 __credits__ = ["Prahlad Yeri"]
-__version__ = "1.0.6"
+__version__ = "1.0.7"
 __status__ = "Production"
 
 app = flask.Flask(__name__)
