@@ -14,18 +14,18 @@ __status__ = "Production"
 
 app = flask.Flask(__name__)
 
-def object_as_dict(obj):
-    return {c.key: getattr(obj, c.key)
-            for c in inspect(obj).mapper.column_attrs}
-
 @app.route("/", methods=["GET", "POST", "PUT", "DELETE"])
 def index():
 	return jsonify({
 		"Application": "flask-tiddly %s" % __version__,
 		"Powered By": "flask %s, sqlalchemy %s" % (flask.__version__, sqlalchemy.__version__),
 		})
+		
+@app.route("/_info")
+def info():
+	return "Info"
 
-@app.route("/<table_name>", defaults={"id":-1}, methods=["GET", "POST", "PUT", "DELETE"])
+@app.route("/<table_name>", defaults={"id":None}, methods=["GET", "POST", "PUT", "DELETE"])
 @app.route("/<table_name>/<id>", methods=["GET", "POST", "PUT", "DELETE"])
 def fetch(table_name, id):
 	print("verb: %s, table: %s, id: %s" % (request.method, table_name, id))
@@ -33,7 +33,7 @@ def fetch(table_name, id):
 		try:
 			TableClass = models.get_class_by_tablename(table_name)
 			if TableClass == None: raise Exception("Table not found: %s" % table_name)
-			if id == -1: #all data
+			if id == None: #all data
 				object = dbsession.query(TableClass).all()
 				data = [object_as_dict(t) for t in object]
 			else:
@@ -97,7 +97,11 @@ def fetch(table_name, id):
 		return jsonify({
 			"status": "error", "error": "Unrecognized verb.",
 			})
-	
+			
+def object_as_dict(obj):
+    return {c.key: getattr(obj, c.key)
+            for c in inspect(obj).mapper.column_attrs}
+
 if __name__ == "__main__":
 	app.secret_key = "4d5ert54fgcdf587ed5d"
 	app.debug = True

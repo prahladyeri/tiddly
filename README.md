@@ -2,9 +2,7 @@
 ![Status](https://img.shields.io/badge/status-stable-brightgreen.svg)
 [![](https://www.paypalobjects.com/en_US/i/btn/x-click-but04.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JM8FUXNFUK6EU)
 
-# Flask-Tiddly
-
-##### Table of Contents
+# flask-tiddly
 
 1. [What is flask-tiddly](#user-content-what-is-flask-tiddly)
 2. [Project Details](#project-details)
@@ -13,9 +11,9 @@
 11. [License](#license)
 13. [Stack](#stack)
 
-## What is Flask-Tiddly
+## What is flask-tiddly
 
-`flask-tiddly` is a minimal, prototype RESTful server app for basic CRUD transactions. It is database agnostic and uses sqlalchemy on the backend to talk to RDBMS. The database is `sqlite` by default, but you can switch to anything you want by making this small change in the `models.py`:
+`flask-tiddly` is a minimal, prototype RESTful server app for basic CRUD transactions. It is database agnostic and uses `sqlalchemy` on the backend to talk to RDBMS. The database is `sqlite` by default, but you can switch to anything you want by making this small change in the `models.py` file:
 
 	#TODO: Change as needed:
 	engine = create_engine("sqlite:///tiddly.db", echo=True)
@@ -23,7 +21,7 @@
 
 ## Project Details
 
-You can host this app and use it as your own replacement for any cloud based backend such as firebase or CouchDB as long as you follow the CRUD based I/O approach. The RESTful methods are versatile and compatible with the data needs of typical Single Page Apps developed in Angular or Backbone. For example:
+You can host this app and use it as your own replacement for any cloud based backend such as `firebase` or `CouchDB` as long as you follow the CRUD based I/O approach. The RESTful methods are versatile and compatible with the data needs of typical Single Page Apps developed in frameworks like `angular`, `backbone` or `ember`. For example:
 
 	GET  	/books ..... => Get all rows from the books table.
 	POST 	/books ..... => Insert record into books table from posted JSON data.
@@ -31,11 +29,11 @@ You can host this app and use it as your own replacement for any cloud based bac
 	PUT  	/books/1 ... => Update the record where `id` equals `1` with posted JSON data.
 	DELETE  /books/1 ... => Delete the record where `id` equals `1`.
 	
-The only "opinionated" thing about this app is this dependence on the `id` field. It assumes that each table has `id` column defined as the primary key and the CRUD transactions are based on that. Also, additional tables like `books` in this example need to be defined in `models.py`. By default, `flask-tiddly` comes with only two tables called `dual` and `user` to play around.
+The only "opinionated" thing about this app is the dependence on the `id` field. It assumes that each table has `id` column defined as the primary key and the CRUD transactions are based on that. Also, additional tables like `books` in this example need to be defined in `models.py`. By default, `flask-tiddly` comes with only two tables called `dual` and `user` to play around. Of course, you can customize and change this logic in `app.py` if you really want.
 
 ## Installation
 
-To install and run this project, just clone/download this github directory and start the `tiddly` app:
+To install and run this project, just clone or [download](https://github.com/prahladyeri/flask-tiddly/archive/master.zip) this github repository and just start the `tiddly` app:
 
 	python app.py
 	
@@ -83,6 +81,7 @@ Finally, you can also install `flask-tiddly` using `pip` just to play around wit
 I intend to add the following features to this template project soon:
 
 - User sign-in and authentication using token key or session.
+- Pagination.
 - Advanced querying using `where` and `order by` clauses.
 - Fetching summaries using `group by` clauses.
 - Enhanced security and error handling.
