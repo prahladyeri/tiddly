@@ -9,24 +9,47 @@ from models import engine, dbsession
 __author__ = "Prahlad Yeri"
 __license__ = "MIT"
 __credits__ = ["Prahlad Yeri"]
-__version__ = "1.0.7"
+__version__ = "1.0.8"
 __status__ = "Production"
 
 app = flask.Flask(__name__)
 
 @app.route("/", methods=["GET", "POST", "PUT", "DELETE"])
 def index():
+	return "It Works!"
+
+@app.route("/_info")
+def info():
 	return jsonify({
 		"Application": "flask-tiddly %s" % __version__,
 		"Powered By": "flask %s, sqlalchemy %s" % (flask.__version__, sqlalchemy.__version__),
 		})
 		
-@app.route("/_info")
-def info():
-	return "Info"
+@app.route("/_query/<table_name>", methods=["FETCH"])
+def query(table_name):
+	print("verb: %s, table: %s" % (request.method, table_name))
+	if request.method == "FETCH":
+		try:
+			data = request.get_json(force=True)
+			data = json.loads(data)
+			print("data: ", data)
+			print("data-type: ", type(data))
+			TableClass = models.get_class_by_tablename(table_name)
+			if TableClass == None: raise Exception("Table not found: %s" % table_name)
+			object = dbsession.query(TableClass).filter_by(**data['where']).all()
+			data = [object_as_dict(t) for t in object]
+			return jsonify({
+				"status": "success", "verb": request.method,
+				"data": data
+				})
+		except Exception as e:
+			return jsonify({
+				"status": "error", "verb": request.method,
+				"error": str(e),
+				})
 
-@app.route("/<table_name>", defaults={"id":None}, methods=["GET", "POST", "PUT", "DELETE"])
-@app.route("/<table_name>/<id>", methods=["GET", "POST", "PUT", "DELETE"])
+@app.route("/<table_name>", defaults={"id":None}, methods=["GET", "POST", "PUT", "DELETE", "FETCH"])
+@app.route("/<table_name>/<id>", methods=["GET", "POST", "PUT", "DELETE", "FETCH"])
 def fetch(table_name, id):
 	print("verb: %s, table: %s, id: %s" % (request.method, table_name, id))
 	if request.method == "GET":
@@ -87,6 +110,25 @@ def fetch(table_name, id):
 			return jsonify({
 				"status": "success", "verb": request.method,
 				"id": object.id,
+				})
+		except Exception as e:
+			return jsonify({
+				"status": "error", "verb": request.method,
+				"error": str(e),
+				})
+	elif request.method == "FETCH":
+		try:
+			data = request.get_json(force=True)
+			data = json.loads(data)
+			print("data: ", data)
+			print("data-type: ", type(data))
+			TableClass = models.get_class_by_tablename(table_name)
+			if TableClass == None: raise Exception("Table not found: %s" % table_name)
+			object = dbsession.query(TableClass).filter_by(**data['where']).all()
+			data = [object_as_dict(t) for t in object]
+			return jsonify({
+				"status": "success", "verb": request.method,
+				"data": data
 				})
 		except Exception as e:
 			return jsonify({

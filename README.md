@@ -23,13 +23,20 @@
 
 You can host this app and use it as your own replacement for any cloud based backend such as `firebase` or `CouchDB` as long as you follow the CRUD based I/O approach. The RESTful methods are versatile and compatible with the data needs of typical Single Page Apps developed in frameworks like `angular`, `backbone` or `ember`. For example:
 
-	GET  	/books ..... => Get all rows from the books table.
-	POST 	/books ..... => Insert record into books table from posted JSON data.
-	GET  	/books/1 ... => Fetch the book record where the `id` field equals `1`.
-	PUT  	/books/1 ... => Update the record where `id` equals `1` with posted JSON data.
-	DELETE  /books/1 ... => Delete the record where `id` equals `1`.
+| Request | url | body | Action |
+| ----- | ----- | ----- | ----- |
+| GET  	| /books | 		| Get all rows from the books table.| 
+| POST 	| /books | {"name":"Harry Potter and the order of the Phoenix."}		| Insert record into books table from posted JSON data.| 
+| GET  	| /books/1 | 		| Fetch the book record where the `id` field equals `1`.| 
+| PUT  	| /books/1 | {"name":"Some new title."}		| Update the record where `id` equals `1` with posted JSON data.| 
+| DELETE | /books/1 |	| Delete the record where `id` equals `1`.| 
 	
-The only "opinionated" thing about this app is the dependence on the `id` field. It assumes that each table has `id` column defined as the primary key and the CRUD transactions are based on that. Also, additional tables like `books` in this example need to be defined in `models.py`. By default, `tiddly` comes with only two tables called `dual` and `user` to play around. Of course, you can customize and change this logic in `app.py` if you really want.
+Additional tables like `books` in this example need to be defined in `models.py`. By default, `tiddly` comes with only two tables called `dual` and `user` to play around. Of course, you can customize and change this logic in `app.py` if you really want. There is also the case when the `GET` method that gets all or one row by `id` isn't sufficient and we need advanced fetching using the `where` clause. For this, I've introduced the `FETCH` http method which does the job:
+
+| Request | url | body                | Action |
+| ----- | ----- | -------------------- | -------------------------------- |
+| FETCH | /dual | {"where": {"id":1}} | Get all rows from the books table.| 
+
 
 ## Installation
 
@@ -82,8 +89,8 @@ I intend to add the following features to this template project soon:
 
 - User sign-in and authentication using token key or session.
 - Pagination.
-- Advanced querying using `where` and `order by` clauses.
-- Fetching summaries using `group by` clauses.
+- Sorting using `order by` clause.
+- Fetching summaries using `group by` clause.
 - Enhanced security and error handling.
 
 ## License
