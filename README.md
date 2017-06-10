@@ -35,7 +35,7 @@ Additional tables like `books` in this example need to be defined in `models.py`
 
 | Request | url | body                | Action |
 | ----- | ----- | -------------------- | -------------------------------- |
-| FETCH | /dual | {"where": {"id":1}} | Get all rows from the books table.| 
+| FETCH | /dual | {"where": {"text":"foobar"}} | Get all rows from the books table where the text field matches the string "foobar".| 
 
 
 ## Installation
