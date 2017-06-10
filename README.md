@@ -26,8 +26,8 @@ You can host this app and use it as your own replacement for any cloud based bac
 | Request | url | body | Action |
 | ----- | ----- | ----- | ----- |
 | GET  	| /books | 		| Get all rows from the books table.| 
-| POST 	| /books | {"name":"Harry Potter and the order of the Phoenix."}		| Insert record into books table from posted JSON data.| 
 | GET  	| /books/1 | 		| Fetch the book record where the `id` field equals `1`.| 
+| POST 	| /books | {"name":"Harry Potter and the order of the Phoenix."}		| Insert record into books table from posted JSON data.| 
 | PUT  	| /books/1 | {"name":"Some new title."}		| Update the record where `id` equals `1` with posted JSON data.| 
 | DELETE | /books/1 |	| Delete the record where `id` equals `1`.| 
 	
