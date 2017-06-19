@@ -1,7 +1,7 @@
 import flask
 from flask import request, jsonify
 import sqlalchemy
-from sqlalchemy import inspect
+from sqlalchemy import inspect, desc
 import json
 import models
 from models import engine, dbsession
@@ -9,7 +9,7 @@ from models import engine, dbsession
 __author__ = "Prahlad Yeri"
 __license__ = "MIT"
 __credits__ = ["Prahlad Yeri"]
-__version__ = "1.0.9"
+__version__ = "1.0.10"
 __status__ = "Production"
 
 app = flask.Flask(__name__)
@@ -124,7 +124,21 @@ def fetch(table_name, id):
 			print("data-type: ", type(data))
 			TableClass = models.get_class_by_tablename(table_name)
 			if TableClass == None: raise Exception("Table not found: %s" % table_name)
-			object = dbsession.query(TableClass).filter_by(**data['where']).all()
+			
+			query = dbsession.query(TableClass).filter_by(**data['where'])
+			if 'orderby' in data:
+				for cname in data['orderby'].split(','):
+					reverse = False
+					if cname.endswith(' desc'):
+						reverse = True
+						cname = cname[:-5]
+					elif cname.endswith(' asc'):
+						cname = cname[:-4]
+					print("cname: ", cname)
+					column = getattr(TableClass, cname)
+					if reverse: column = desc(column)
+					query = query.order_by(column)
+			object = query.all()
 			data = [object_as_dict(t) for t in object]
 			return jsonify({
 				"status": "success", "verb": request.method,
@@ -145,6 +159,7 @@ def object_as_dict(obj):
             for c in inspect(obj).mapper.column_attrs}
 
 if __name__ == "__main__":
+	print("tiddly v%s" % __version__)
 	app.secret_key = "4d5ert54fgcdf587ed5d"
 	app.debug = True
 	app.run()

@@ -31,11 +31,13 @@ You can host this app and use it as your own replacement for any cloud based bac
 | PUT  	| /books/1 | {"name":"Some new title."}		| Update the record where `id` equals `1` with posted JSON data.| 
 | DELETE | /books/1 |	| Delete the record where `id` equals `1`.| 
 	
-Additional tables like `books` in this example need to be defined in `models.py`. By default, `tiddly` comes with only two tables called `dual` and `user` to play around. Of course, you can customize and change this logic in `app.py` if you really want. There is also the case when the `GET` method that gets all or one row by `id` isn't sufficient and we need advanced fetching using the `where` clause. For this, I've introduced the `FETCH` http method which does the job:
+Additional tables like `books` in this example need to be defined in `models.py`. By default, `tiddly` comes with only two tables called `dual` and `user` to play around. Of course, you can customize and change this logic in `app.py` if you really want. There is also the case when the `GET` method that gets all or one row by `id` isn't sufficient and we need advanced fetching using the `where` or `orderby` clauses. For this, I've introduced the `FETCH` http method which does the job:
 
 | Request | url | body                | Action |
 | ----- | ----- | -------------------- | -------------------------------- |
 | FETCH | /dual | {"where": {"text":"foobar"}} | Get all rows from the books table where the text field matches the string "foobar".| 
+| FETCH | /user | {"where": {"name":"admin"}, "orderby": "email"} | Get all rows from the user table where the name matches "admin" and sort results by email column.| 
+| FETCH | /user | {"where": {"name":"admin"}, "orderby": "email desc"} | Get all rows from the user table where the name matches "admin" and sort results by email column in descending order.| 
 
 
 ## Installation
@@ -87,9 +89,9 @@ Finally, you can also install `tiddly` using `pip` just to play around with:
 
 I intend to add the following features to this template project soon:
 
+- Sorting using `order by` clause (done).
 - User sign-in and authentication using token key or session.
 - Pagination.
-- Sorting using `order by` clause.
 - Fetching summaries using `group by` clause.
 - Enhanced security and error handling.
 
