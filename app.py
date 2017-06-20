@@ -1,5 +1,5 @@
 import flask
-from flask import request, jsonify
+from flask import request, jsonify, session
 import sqlalchemy
 from sqlalchemy import inspect, desc
 import json
@@ -9,10 +9,18 @@ from models import engine, dbsession
 __author__ = "Prahlad Yeri"
 __license__ = "MIT"
 __credits__ = ["Prahlad Yeri"]
-__version__ = "1.0.10"
+__version__ = "1.0.11"
 __status__ = "Production"
 
 app = flask.Flask(__name__)
+
+#TODO: move this to a configuration file.
+config = {
+	'auth': False #enable authentication.
+	}
+
+def is_login_valid():
+	return session.get('auth_email') != None
 
 @app.route("/", methods=["GET", "POST", "PUT", "DELETE"])
 def index():
@@ -25,33 +33,28 @@ def info():
 		"Powered By": "flask %s, sqlalchemy %s" % (flask.__version__, sqlalchemy.__version__),
 		})
 		
-@app.route("/_query/<table_name>", methods=["FETCH"])
-def query(table_name):
-	print("verb: %s, table: %s" % (request.method, table_name))
-	if request.method == "FETCH":
-		try:
-			data = request.get_json(force=True)
-			data = json.loads(data)
-			print("data: ", data)
-			print("data-type: ", type(data))
-			TableClass = models.get_class_by_tablename(table_name)
-			if TableClass == None: raise Exception("Table not found: %s" % table_name)
-			object = dbsession.query(TableClass).filter_by(**data['where']).all()
-			data = [object_as_dict(t) for t in object]
-			return jsonify({
-				"status": "success", "verb": request.method,
-				"data": data
-				})
-		except Exception as e:
-			return jsonify({
-				"status": "error", "verb": request.method,
-				"error": str(e),
-				})
+@app.route("/login", methods=["POST"])
+def login():
+	data = request.get_json(force=True)
+	data = json.loads(data)
+	print('data:',data, type(data))
+	query = dbsession.query(models.User).filter_by(email=data['email'], password=data['password'])
+	rows = query.all()
+	if len(rows) == 0:
+		return jsonify({'status':'error', 'error':'Invalid email or password.'})
+	else:
+		session['auth_email'] = rows[0].email
+		return jsonify({'status':'success'})
 
-@app.route("/<table_name>", defaults={"id":None}, methods=["GET", "POST", "PUT", "DELETE", "FETCH"])
-@app.route("/<table_name>/<id>", methods=["GET", "POST", "PUT", "DELETE", "FETCH"])
-def fetch(table_name, id):
-	print("verb: %s, table: %s, id: %s" % (request.method, table_name, id))
+@app.route("/<table_name>", methods=["GET", "POST", "PUT", "DELETE", "FETCH"])
+def fetch(table_name):
+	print("verb: %s, tablename: %s" % (request.method, table_name))
+	if config['auth'] and not is_login_valid():
+		print("Unauthorized Access.")
+		return jsonify({
+				"status": "error",
+				"error": "Unauthorized Access."
+			})
 	if request.method == "GET":
 		try:
 			TableClass = models.get_class_by_tablename(table_name)
@@ -64,12 +67,12 @@ def fetch(table_name, id):
 				if object == None: raise Exception("No data found.")
 				data = object_as_dict(object)
 			return jsonify({
-				"status": "success", "verb": request.method,
+				"status": "success",
 				"data": data
 				})
 		except Exception as e:
 			return jsonify({
-				"status": "error", "verb": request.method,
+				"status": "error",
 				"error": str(e),
 				})
 	elif request.method == "POST" or request.method == "PUT":
@@ -91,12 +94,12 @@ def fetch(table_name, id):
 				#dbsession.add(object)
 				dbsession.commit()
 			return jsonify({
-				"status": "success", "verb": request.method,
+				"status": "success",
 				"id": object.id,
 				})
 		except Exception as e:
 			return jsonify({
-				"status": "error", "verb": request.method,
+				"status": "error",
 				"error": str(e),
 				})
 	elif request.method == "DELETE":
@@ -108,12 +111,12 @@ def fetch(table_name, id):
 			dbsession.delete(object)
 			dbsession.commit()
 			return jsonify({
-				"status": "success", "verb": request.method,
+				"status": "success",
 				"id": object.id,
 				})
 		except Exception as e:
 			return jsonify({
-				"status": "error", "verb": request.method,
+				"status": "error",
 				"error": str(e),
 				})
 	elif request.method == "FETCH":
@@ -138,15 +141,18 @@ def fetch(table_name, id):
 					column = getattr(TableClass, cname)
 					if reverse: column = desc(column)
 					query = query.order_by(column)
+			if 'limit' in data:
+				query = query.limit(data['limit'])
+				query = query.offset(data['offset'])
 			object = query.all()
 			data = [object_as_dict(t) for t in object]
 			return jsonify({
-				"status": "success", "verb": request.method,
+				"status": "success", 
 				"data": data
 				})
 		except Exception as e:
 			return jsonify({
-				"status": "error", "verb": request.method,
+				"status": "error",
 				"error": str(e),
 				})
 	else:

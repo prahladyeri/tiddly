@@ -35,9 +35,10 @@ Additional tables like `books` in this example need to be defined in `models.py`
 
 | Request | url | body                | Action |
 | ----- | ----- | -------------------- | -------------------------------- |
-| FETCH | /dual | {"where": {"text":"foobar"}} | Get all rows from the books table where the text field matches the string "foobar".| 
-| FETCH | /user | {"where": {"name":"admin"}, "orderby": "email"} | Get all rows from the user table where the name matches "admin" and sort results by email column.| 
-| FETCH | /user | {"where": {"name":"admin"}, "orderby": "email desc"} | Get all rows from the user table where the name matches "admin" and sort results by email column in descending order.| 
+| FETCH | /dual | {"where": {"text":"foobar"}} | Fetch all rows from the books table where the text field matches the string "foobar".| 
+| FETCH | /user | {"where": {"name":"admin"}, "orderby": "email"} | Fetch all rows from the user table where the name matches "admin" and sort results by email column.| 
+| FETCH | /user | {"where": {"name":"admin"}, "orderby": "email desc"} | Fetch all rows from the user table where the name matches "admin" and sort results by email column in descending order.| 
+| FETCH | /user | {"where": {"name":"admin"}, "orderby": "email desc", "limit":10, "offset": 2} | Fetch at most 10 rows, starting at offset 2 from the user table where the name matches "admin". Sort results by email column in descending order.| 
 
 
 ## Installation
@@ -90,10 +91,9 @@ Finally, you can also install `tiddly` using `pip` just to play around with:
 I intend to add the following features to this template project soon:
 
 - Sorting using `order by` clause (done).
-- User sign-in and authentication using token key or session.
 - Pagination.
 - Fetching summaries using `group by` clause.
-- Enhanced security and error handling.
+- User sign-in and authentication using session or tokens.
 
 ## License
 
